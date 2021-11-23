@@ -12,7 +12,7 @@ const calcularDepreciacionNIIF = (precioInicial, precioFinal, vidaUtil, numeroPe
 }
 
 const calcularDepreciacionNIIFEnDolares = (precioInicial, precioFinal, vidaUtil, numeroPeriodoAconsultar) => {
-    
+    return (calcularDepreciacionNIIF(precioInicial, precioFinal, vidaUtil, numeroPeriodoAconsultar))*3950;
 }
 
 module.exports.calcularDepreciacionNIIF = calcularDepreciacionNIIF;
