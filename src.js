@@ -1,4 +1,4 @@
-const calcularDepreciacionNIIF = (precioInicial, precioFinal, vidaUtil, numeroPeriodoAconsultar) => {
+/*const calcularDepreciacionNIIF = (precioInicial, precioFinal, vidaUtil, numeroPeriodoAconsultar) => {
     if(vidaUtil<=0){
 		return 0;
 	}else if(numeroPeriodoAconsultar<0){
@@ -11,7 +11,7 @@ const calcularDepreciacionNIIF = (precioInicial, precioFinal, vidaUtil, numeroPe
     }
 }
 
-/*const calcularDepreciacionNIIFEnDolares = (precioInicial, precioFinal, vidaUtil, numeroPeriodoAconsultar) => {
+const calcularDepreciacionNIIFEnDolares = (precioInicial, precioFinal, vidaUtil, numeroPeriodoAconsultar) => {
 	if(precioInicial<0){
 		throw "error";
 	}
@@ -27,7 +27,7 @@ async function mostrarProductos(){
     productosAPI.forEach(e => {
         const precioDepreciado = calcularDepreciacionNIIF(e.precioInicial,e.precioFinal,e.vidaUtil,e.periodo_consultado);
         productosConDepreciacion.push({
-            "depreciacion":precioDepreciado,
+            "precioDepreciado":Number(precioDepreciado),
             "precioInicial":e.precioInicial,
             "precioFinall":e.precioFinal,
             "vidaUtil":e.vidaUtil,
@@ -46,12 +46,12 @@ async function mostrarProductosPrecioDolares(){
 	let productosAPI = await response.json()
 
     for(var i = 0 ; i < productosAPI.length; i++) {
-        const depreciaciond = calcularDepreciacionNIIF(productosAPI[i].precioInicial,productosAPI[i].precioFinal,productosAPI[i].vidaUtil,productosAPI[i].periodo_consultado);
-        let valorDepreciacion = await fetch('https://misiontic2022upb.vercel.app/api/logistics/to-dolar-converter/'+depreciaciond)
-        let precioDolares = await valorDepreciacion.json();
+        const precioDepreciado = calcularDepreciacionNIIF(productosAPI[i].precioInicial,productosAPI[i].precioFinal,productosAPI[i].vidaUtil,productosAPI[i].periodo_consultado);
+        let valorDepreciacion = await fetch('https://misiontic2022upb.vercel.app/api/logistics/to-dolar-converter/'+precioDepreciado)
+        let precioDepreciadoEnDolares = await valorDepreciacion.json();
 
         productosConDepreciacion.push({
-            "depreciacion":precioDolares,
+            "precioDepreciadoEnDolares":precioDepreciadoEnDolares,
             "precioInicial":productosAPI[i].precioInicial,
             "precioFinall":productosAPI[i].precioFinal,
             "vidaUtil":productosAPI[i].vidaUtil,
@@ -62,9 +62,9 @@ async function mostrarProductosPrecioDolares(){
     return productosConDepreciacion;
 }
 
-mostrarProductos().then(console.log);
-mostrarProductosPrecioDolares().then(console.log);
-//module.exports.mostrarProductos = mostrarProductos;
-//module.exports.mostrarProductosPrecioDolares = mostrarProductosPrecioDolares;
+//mostrarProductos().then(console.log);
+//mostrarProductosPrecioDolares().then(console.log);
+module.exports.mostrarProductos = mostrarProductos;
+module.exports.mostrarProductosPrecioDolares = mostrarProductosPrecioDolares;
 //module.exports.calcularDepreciacionNIIF = calcularDepreciacionNIIF;
 //module.exports.calcularDepreciacionNIIFEnDolares = calcularDepreciacionNIIFEnDolares;
