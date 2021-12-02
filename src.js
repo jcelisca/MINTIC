@@ -25,7 +25,16 @@ async function mostrarProductos(){
     let productosAPI = await response.json()	
 
     productosAPI.forEach(e => {
-        const precioDepreciado = calcularDepreciacionNIIF(e.precioInicial,e.precioFinal,e.vidaUtil,e.periodo_consultado);
+        var precioDepreciado = calcularDepreciacionNIIF(e.precioInicial,e.precioFinal,e.vidaUtil,e.periodo_consultado);
+
+        /*let precioDepreciado = ()=>{
+            let valor;
+            const precioDepreciado = calcularDepreciacionNIIF(productosAPI[i].precioInicial,productosAPI[i].precioFinal,productosAPI[i].vidaUtil,productosAPI[i].periodo_consultado);
+            fetch('https://misiontic2022upb.vercel.app/api/logistics/to-dolar-converter/'+precioDepreciado)
+            .then(res => valor = res.json())
+            return valor;
+        }*/
+
         productosConDepreciacion.push({
             "precioDepreciado":Number(precioDepreciado),
             "precioInicial":e.precioInicial,
@@ -39,7 +48,6 @@ async function mostrarProductos(){
 }
 
 
-
 async function mostrarProductosPrecioDolares(){
     let productosConDepreciacion = [];
 	let response = await fetch('https://misiontic2022upb.vercel.app/api/logistics/products');
@@ -48,10 +56,18 @@ async function mostrarProductosPrecioDolares(){
     for(var i = 0 ; i < productosAPI.length; i++) {
         const precioDepreciado = calcularDepreciacionNIIF(productosAPI[i].precioInicial,productosAPI[i].precioFinal,productosAPI[i].vidaUtil,productosAPI[i].periodo_consultado);
         let valorDepreciacion = await fetch('https://misiontic2022upb.vercel.app/api/logistics/to-dolar-converter/'+precioDepreciado)
-        let precioDepreciadoEnDolares = await valorDepreciacion.json();
+        var precioDepreciadoEnDolares = await valorDepreciacion.json();
+
+        /*let precioDepreciadoEnDolares = ()=>{
+            let valor;
+            const precioDepreciado = calcularDepreciacionNIIF(productosAPI[i].precioInicial,productosAPI[i].precioFinal,productosAPI[i].vidaUtil,productosAPI[i].periodo_consultado);
+            fetch('https://misiontic2022upb.vercel.app/api/logistics/to-dolar-converter/'+precioDepreciado)
+            .then(res => valor = res.json())
+            return valor;
+        }*/
 
         productosConDepreciacion.push({
-            "precioDepreciadoEnDolares":precioDepreciadoEnDolares,
+            "precioDepreciadoEnDolares":Number(precioDepreciadoEnDolares),
             "precioInicial":productosAPI[i].precioInicial,
             "precioFinall":productosAPI[i].precioFinal,
             "vidaUtil":productosAPI[i].vidaUtil,
